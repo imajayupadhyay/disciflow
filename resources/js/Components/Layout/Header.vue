@@ -46,6 +46,17 @@
                         Trackers
                     </Link>
                     <Link
+                        href="/pricing"
+                        :class="[
+                            'px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200',
+                            isActive('/pricing')
+                                ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+                                : 'text-zinc-700 dark:text-zinc-300 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+                        ]"
+                    >
+                        Pricing
+                    </Link>
+                    <Link
                         href="/support"
                         :class="[
                             'px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200',
@@ -175,6 +186,17 @@
                     ]"
                 >
                     Trackers
+                </Link>
+                <Link
+                    href="/pricing"
+                    :class="[
+                        'block px-4 py-2 text-sm font-medium rounded-lg transition-all',
+                        isActive('/pricing')
+                            ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+                            : 'text-zinc-700 dark:text-zinc-300 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+                    ]"
+                >
+                    Pricing
                 </Link>
                 <Link
                     href="/support"

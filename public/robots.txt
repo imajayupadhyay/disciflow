@@ -1,2 +1,14 @@
+# DisciFlow Robots.txt
+# Prevent crawling of coming soon and error pages
+
 User-agent: *
-Disallow:
+
+# Disallow coming soon pages
+Disallow: /coming-soon
+Disallow: /coming-soon/*
+
+# Allow all other pages
+Allow: /
+
+# Sitemap location (update this when you create your sitemap)
+# Sitemap: https://yourdomain.com/sitemap.xml

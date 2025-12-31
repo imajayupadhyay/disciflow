@@ -16,5 +16,22 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->respond(function (\Illuminate\Http\Response $response) {
+            // In production, show custom error pages for all error codes
+            if (!app()->environment('local') && in_array($response->status(), [500, 503, 404, 403])) {
+                return \Inertia\Inertia::render('Error', ['status' => $response->status()])
+                    ->toResponse(request())
+                    ->setStatusCode($response->status());
+            }
+
+            // In local development, show custom error pages for 404 and 403
+            // but let Laravel show detailed errors for 500/503
+            if (app()->environment('local') && in_array($response->status(), [404, 403])) {
+                return \Inertia\Inertia::render('Error', ['status' => $response->status()])
+                    ->toResponse(request())
+                    ->setStatusCode($response->status());
+            }
+
+            return $response;
+        });
     })->create();

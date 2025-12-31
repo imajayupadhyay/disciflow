@@ -16,6 +16,16 @@ Route::get('/support', function () {
     return Inertia::render('Support/Index');
 })->name('support.index');
 
+Route::get('/pricing', function () {
+    return Inertia::render('Pricing/Index');
+})->name('pricing.index');
+
+Route::get('/coming-soon/{tracker?}', function ($tracker = null) {
+    return Inertia::render('ComingSoon', [
+        'tracker' => $tracker ? ucfirst($tracker) : null
+    ]);
+})->name('coming-soon');
+
 // Authentication routes
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);

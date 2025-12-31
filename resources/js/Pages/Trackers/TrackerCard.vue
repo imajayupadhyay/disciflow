@@ -70,6 +70,7 @@
 
 <script setup>
 import { computed } from 'vue';
+import { router } from '@inertiajs/vue3';
 import Card from '@/Components/UI/Card.vue';
 import Badge from '@/Components/UI/Badge.vue';
 
@@ -147,8 +148,7 @@ const iconBgClass = computed(() => {
 const handleClick = () => {
     emit('click');
     if (props.route) {
-        // Navigate to route when implemented
-        console.log('Navigate to:', props.route);
+        router.visit(props.route);
     }
 };
 </script>

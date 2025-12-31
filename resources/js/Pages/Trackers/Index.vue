@@ -149,7 +149,7 @@ const trackers = [
             'Savings goals'
         ],
         actionText: 'Manage Budget',
-        route: '/trackers/budget'
+        route: '/coming-soon/budget'
     },
     {
         id: 'habit',
@@ -171,7 +171,7 @@ const trackers = [
             'Success rate metrics'
         ],
         actionText: 'Track Habits',
-        route: '/trackers/habits'
+        route: '/coming-soon/habit'
     },
     {
         id: 'tasks',
@@ -191,7 +191,7 @@ const trackers = [
             'Completion analytics'
         ],
         actionText: 'Manage Tasks',
-        route: '/trackers/tasks'
+        route: '/coming-soon/task'
     },
     {
         id: 'goals',
@@ -211,7 +211,7 @@ const trackers = [
             'Goal analytics'
         ],
         actionText: 'View Goals',
-        route: '/trackers/goals'
+        route: '/coming-soon/goals'
     },
     {
         id: 'food',
@@ -231,7 +231,7 @@ const trackers = [
             'Meal patterns'
         ],
         actionText: 'Log Meals',
-        route: '/trackers/food'
+        route: '/coming-soon/food'
     },
     {
         id: 'time',
@@ -251,7 +251,7 @@ const trackers = [
             'Time distribution'
         ],
         actionText: 'Track Time',
-        route: '/trackers/time'
+        route: '/coming-soon/time'
     },
     {
         id: 'gym',
@@ -273,7 +273,7 @@ const trackers = [
             'Strength progression'
         ],
         actionText: 'Log Workout',
-        route: '/trackers/gym'
+        route: '/coming-soon/gym'
     },
     {
         id: 'sleep',
@@ -293,7 +293,7 @@ const trackers = [
             'Pattern analysis'
         ],
         actionText: 'Track Sleep',
-        route: '/trackers/sleep'
+        route: '/coming-soon/sleep'
     }
 ];
 
@@ -305,7 +305,6 @@ const filteredTrackers = computed(() => {
 });
 
 const handleTrackerClick = (tracker) => {
-    console.log('Tracker clicked:', tracker.title);
-    // TODO: Navigate to tracker page when routes are set up
+    // Navigation handled by TrackerCard component route prop
 };
 </script>

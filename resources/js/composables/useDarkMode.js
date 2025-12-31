@@ -1,6 +1,6 @@
 import { ref, watch, onMounted } from 'vue';
 
-const isDark = ref(true); // Default to dark mode
+const isDark = ref(false); // Default to light mode
 
 export function useDarkMode() {
     const toggleDarkMode = () => {
@@ -21,11 +21,11 @@ export function useDarkMode() {
     const initTheme = () => {
         const savedTheme = localStorage.getItem('theme');
 
-        // Default to dark if no saved preference
+        // Default to light if no saved preference
         if (savedTheme) {
             isDark.value = savedTheme === 'dark';
         } else {
-            isDark.value = true; // Default to dark
+            isDark.value = false; // Default to light
         }
 
         updateTheme();
