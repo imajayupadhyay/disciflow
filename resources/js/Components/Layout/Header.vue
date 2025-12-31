@@ -1,10 +1,10 @@
 <template>
-    <header class="fixed w-full top-0 left-0 z-50 transition-all duration-300" :class="isScrolled ? 'p-0' : 'py-4 px-4'">
+    <header class="fixed w-full top-0 left-0 z-50 transition-all duration-300" :class="isScrolled ? 'p-0' : 'p-0 md:py-4 md:px-4'">
         <nav :class="[
             'mx-auto bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl shadow-lg transition-all duration-300',
             isScrolled
                 ? 'max-w-full rounded-none border-b border-zinc-200 dark:border-zinc-700'
-                : 'max-w-[80%] rounded-2xl border border-zinc-200 dark:border-zinc-700'
+                : 'max-w-full rounded-none border-b border-zinc-200 dark:border-zinc-700 md:max-w-[80%] md:rounded-2xl md:border md:border-zinc-200 md:dark:border-zinc-700'
         ]">
             <div class="flex justify-between items-center h-16 px-6">
                 <!-- Logo -->

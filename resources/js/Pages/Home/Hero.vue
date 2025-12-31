@@ -1,5 +1,5 @@
 <template>
-    <section class="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900 pt-16 lg:pt-0">
+    <section class="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-zinc-50 via-white to-amber-50/30 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900">
 
         <!-- Background Pattern -->
         <div class="absolute inset-0 opacity-[0.03] dark:opacity-[0.02]">
@@ -7,7 +7,7 @@
         </div>
 
         <!-- Content Container -->
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-32">
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12 sm:py-16 lg:py-32">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
 
                 <!-- Left Content -->
