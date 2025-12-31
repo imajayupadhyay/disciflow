@@ -1,4 +1,26 @@
 <template>
+    <Head>
+        <title>Life Trackers - Track Every Aspect of Your Life | Disciflow</title>
+        <meta name="description" content="Explore 8+ powerful life trackers including budget, habits, fitness, sleep, goals, tasks, time, and food tracking. Build discipline through comprehensive data tracking and actionable insights." />
+        <meta name="keywords" content="life trackers, habit tracker, budget tracker, gym tracker, sleep tracker, food tracker, time tracker, task tracker, goal tracker, fitness tracking, expense tracking, productivity tools" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Life Trackers - Track Every Aspect of Your Life" />
+        <meta property="og:description" content="Explore 8+ powerful life trackers for budget, habits, fitness, sleep, goals, and more. Build discipline through comprehensive tracking." />
+        <meta property="og:site_name" content="Disciflow" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Life Trackers - Track Every Aspect of Your Life" />
+        <meta name="twitter:description" content="Explore 8+ powerful life trackers for budget, habits, fitness, sleep, goals, and more. Build discipline through comprehensive tracking." />
+
+        <!-- Additional SEO Tags -->
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Disciflow" />
+        <link rel="canonical" href="https://disciflow.com/trackers" />
+    </Head>
+
     <div class="min-h-screen flex flex-col bg-white dark:bg-black transition-colors duration-500 relative overflow-hidden">
         <!-- Background SVG Pattern -->
         <div class="absolute inset-0 pointer-events-none">
@@ -114,6 +136,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { Head } from '@inertiajs/vue3';
 import Header from '@/Components/Layout/Header.vue';
 import Footer from '@/Components/Layout/Footer.vue';
 import TrackerCard from './TrackerCard.vue';

@@ -1,0 +1,17 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="url(#gradient)"/>
+
+  <!-- Chart bars -->
+  <rect x="106" y="288" width="54" height="128" rx="27" fill="white" opacity="0.9"/>
+  <rect x="192" y="224" width="54" height="192" rx="27" fill="white"/>
+  <rect x="278" y="160" width="54" height="256" rx="27" fill="white"/>
+  <rect x="364" y="96" width="54" height="320" rx="27" fill="white" opacity="0.9"/>
+
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#92400E"/>
+    </linearGradient>
+  </defs>
+</svg>

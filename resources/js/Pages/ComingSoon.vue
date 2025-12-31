@@ -1,4 +1,25 @@
 <template>
+    <Head>
+        <title>{{ tracker ? `${tracker} Tracker` : 'Feature' }} Coming Soon | Disciflow</title>
+        <meta name="description" :content="`${tracker ? tracker + ' tracker is' : 'This feature is'} currently under development. We're crafting something exceptional with powerful features, intuitive design, and comprehensive insights for your life tracking journey.`" />
+        <meta name="keywords" :content="`coming soon, ${tracker ? tracker.toLowerCase() + ' tracker,' : ''} disciflow features, under development, new features, life tracking, upcoming trackers`" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" :content="`${tracker ? tracker + ' Tracker' : 'Feature'} Coming Soon`" />
+        <meta property="og:description" :content="`${tracker ? tracker + ' tracker is' : 'This feature is'} currently under development. Stay tuned for powerful tracking capabilities.`" />
+        <meta property="og:site_name" content="Disciflow" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" :content="`${tracker ? tracker + ' Tracker' : 'Feature'} Coming Soon`" />
+        <meta name="twitter:description" :content="`${tracker ? tracker + ' tracker is' : 'This feature is'} currently under development. Stay tuned for powerful tracking capabilities.`" />
+
+        <!-- Additional SEO Tags -->
+        <meta name="robots" content="noindex, follow" />
+        <meta name="author" content="Disciflow" />
+    </Head>
+
     <div class="min-h-screen bg-white dark:bg-black flex items-center justify-center relative overflow-hidden">
         <!-- Background Pattern -->
         <div class="absolute inset-0 pointer-events-none">
@@ -123,7 +144,7 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 
 defineProps({
     tracker: {

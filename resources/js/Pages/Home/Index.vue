@@ -1,4 +1,26 @@
 <template>
+    <Head>
+        <title>Disciflow - Build Discipline Through Life Tracking | Your Life Operating System</title>
+        <meta name="description" content="Master your life with Disciflow - the ultimate life tracking platform. Track habits, budget, fitness, goals, and more. Build discipline through data-driven insights and consistent self-improvement." />
+        <meta name="keywords" content="life tracker, habit tracker, budget tracker, fitness tracker, goal tracking, discipline building, self improvement, productivity app, life management, personal development, daily habits, expense tracking" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Disciflow - Build Discipline Through Life Tracking" />
+        <meta property="og:description" content="Master your life with Disciflow. Track habits, budget, fitness, goals, and more with our comprehensive life tracking platform." />
+        <meta property="og:site_name" content="Disciflow" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Disciflow - Build Discipline Through Life Tracking" />
+        <meta name="twitter:description" content="Master your life with Disciflow. Track habits, budget, fitness, goals, and more with our comprehensive life tracking platform." />
+
+        <!-- Additional SEO Tags -->
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Disciflow" />
+        <link rel="canonical" href="https://disciflow.com/" />
+    </Head>
+
     <div class="min-h-screen flex flex-col bg-white dark:bg-black transition-colors duration-500 relative overflow-hidden">
         <!-- Background SVG Pattern -->
         <div class="absolute inset-0 pointer-events-none">
@@ -50,6 +72,7 @@
 </template>
 
 <script setup>
+import { Head } from '@inertiajs/vue3';
 import Header from '@/Components/Layout/Header.vue';
 import Footer from '@/Components/Layout/Footer.vue';
 import Hero from './Hero.vue';

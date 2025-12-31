@@ -1,4 +1,25 @@
 <template>
+    <Head>
+        <title>{{ title }} - {{ status }} Error | Disciflow</title>
+        <meta name="description" :content="description" />
+        <meta name="keywords" content="error page, page not found, 404, server error, disciflow" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" :content="`${title} - ${status} Error`" />
+        <meta property="og:description" :content="description" />
+        <meta property="og:site_name" content="Disciflow" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" :content="`${title} - ${status} Error`" />
+        <meta name="twitter:description" :content="description" />
+
+        <!-- Additional SEO Tags -->
+        <meta name="robots" content="noindex, follow" />
+        <meta name="author" content="Disciflow" />
+    </Head>
+
     <div class="min-h-screen bg-white dark:bg-black flex items-center justify-center relative overflow-hidden">
         <!-- Background Pattern -->
         <div class="absolute inset-0 pointer-events-none">
@@ -108,7 +129,7 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 const props = defineProps({

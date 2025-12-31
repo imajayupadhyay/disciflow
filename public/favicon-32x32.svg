@@ -1,0 +1,17 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="32" height="32" rx="6" fill="url(#gradient)"/>
+
+  <!-- Chart bars -->
+  <rect x="7" y="18" width="3" height="7" rx="1.5" fill="white" opacity="0.9"/>
+  <rect x="12" y="14" width="3" height="11" rx="1.5" fill="white"/>
+  <rect x="17" y="10" width="3" height="15" rx="1.5" fill="white"/>
+  <rect x="22" y="6" width="3" height="19" rx="1.5" fill="white" opacity="0.9"/>
+
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#92400E"/>
+    </linearGradient>
+  </defs>
+</svg>

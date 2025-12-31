@@ -1,4 +1,26 @@
 <template>
+    <Head>
+        <title>Support Center - Help & FAQs | Disciflow</title>
+        <meta name="description" content="Get help with Disciflow. Find answers to common questions about getting started, trackers, features, account management, and billing. Contact our support team for assistance." />
+        <meta name="keywords" content="disciflow support, help center, customer support, faq, getting started guide, troubleshooting, contact support, account help, billing questions, tracker help" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Support Center - Help & FAQs" />
+        <meta property="og:description" content="Get help with Disciflow. Find answers to common questions and contact our support team for assistance." />
+        <meta property="og:site_name" content="Disciflow" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Support Center - Help & FAQs" />
+        <meta name="twitter:description" content="Get help with Disciflow. Find answers to common questions and contact our support team for assistance." />
+
+        <!-- Additional SEO Tags -->
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Disciflow" />
+        <link rel="canonical" href="https://disciflow.com/support" />
+    </Head>
+
     <div class="min-h-screen flex flex-col bg-white dark:bg-black transition-colors duration-500 relative overflow-hidden">
         <!-- Background SVG Pattern -->
         <div class="absolute inset-0 pointer-events-none">
@@ -225,6 +247,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { Head } from '@inertiajs/vue3';
 import Header from '@/Components/Layout/Header.vue';
 import Footer from '@/Components/Layout/Footer.vue';
 

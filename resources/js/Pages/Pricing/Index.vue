@@ -1,4 +1,26 @@
 <template>
+    <Head>
+        <title>Pricing Plans - Simple & Transparent Pricing | Disciflow</title>
+        <meta name="description" content="Choose the perfect plan to track and master your life. Start free with 1 tracker, upgrade to Pro for 3 trackers, or go Enterprise for unlimited access. Flexible monthly and yearly billing with 20% savings." />
+        <meta name="keywords" content="disciflow pricing, life tracker pricing, subscription plans, habit tracker cost, budget tracker pricing, free tracker, premium tracking app, affordable life management" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Pricing Plans - Simple & Transparent Pricing" />
+        <meta property="og:description" content="Choose the perfect plan to track and master your life. Start free or upgrade to Pro and Enterprise plans with advanced features." />
+        <meta property="og:site_name" content="Disciflow" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Pricing Plans - Simple & Transparent Pricing" />
+        <meta name="twitter:description" content="Choose the perfect plan to track and master your life. Start free or upgrade to Pro and Enterprise plans with advanced features." />
+
+        <!-- Additional SEO Tags -->
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Disciflow" />
+        <link rel="canonical" href="https://disciflow.com/pricing" />
+    </Head>
+
     <div class="min-h-screen flex flex-col bg-white dark:bg-black transition-colors duration-500 relative overflow-hidden">
         <!-- Background SVG Pattern -->
         <div class="absolute inset-0 pointer-events-none">
@@ -309,6 +331,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { Head } from '@inertiajs/vue3';
 import Header from '@/Components/Layout/Header.vue';
 import Footer from '@/Components/Layout/Footer.vue';
 
