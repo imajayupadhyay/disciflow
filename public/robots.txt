@@ -1,9 +1,16 @@
 # DisciFlow Robots.txt
-# Prevent crawling of coming soon and error pages
+# Prevent crawling of protected and private pages
 
 User-agent: *
 
-# Disallow coming soon pages
+# Disallow dashboard and all protected pages
+Disallow: /dashboard
+Disallow: /dashboard/*
+Disallow: /profile
+Disallow: /trackers
+Disallow: /trackers/*
+
+# Disallow coming soon and error pages
 Disallow: /coming-soon
 Disallow: /coming-soon/*
 

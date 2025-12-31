@@ -1,4 +1,6 @@
 <template>
+  <Head title="Categories - Budget Calculator" />
+
   <div class="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
     <Header />
     <Sidebar />
@@ -240,6 +242,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { Head } from '@inertiajs/vue3';
 import Header from '@/Components/Layout/Header.vue';
 import Sidebar from '@/Pages/Dashboard/Components/Sidebar.vue';
 import { useSidebar } from '@/composables/useSidebar';
