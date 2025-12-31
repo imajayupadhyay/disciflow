@@ -32,6 +32,8 @@ class AuthController extends Controller
                 'id' => $customer->id,
                 'name' => $customer->name,
                 'email' => $customer->email,
+                'google_id' => $customer->google_id,
+                'created_at' => $customer->created_at,
             ]
         ]);
     }
@@ -59,6 +61,8 @@ class AuthController extends Controller
                 'id' => $customer->id,
                 'name' => $customer->name,
                 'email' => $customer->email,
+                'google_id' => $customer->google_id,
+                'created_at' => $customer->created_at,
             ]
         ]);
     }
@@ -90,7 +94,76 @@ class AuthController extends Controller
                 'id' => $customer->id,
                 'name' => $customer->name,
                 'email' => $customer->email,
+                'google_id' => $customer->google_id,
+                'created_at' => $customer->created_at,
             ]
+        ]);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        if (!$customer) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:customers,email,' . $customer->id,
+        ]);
+
+        $customer->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'user' => [
+                'id' => $customer->id,
+                'name' => $customer->name,
+                'email' => $customer->email,
+                'google_id' => $customer->google_id,
+                'created_at' => $customer->created_at,
+            ]
+        ]);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        if (!$customer) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+
+        $validated = $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // Verify current password
+        if (!Hash::check($validated['current_password'], $customer->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => ['The current password is incorrect.'],
+            ]);
+        }
+
+        // Update password
+        $customer->update([
+            'password' => Hash::make($validated['new_password']),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password updated successfully'
         ]);
     }
 }

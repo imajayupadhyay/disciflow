@@ -1,13 +1,6 @@
 <template>
-    <header class="fixed w-full top-0 left-0 z-50 transition-all duration-300" :class="fullWidth ? 'p-0' : (isScrolled ? 'p-0' : 'p-0 md:py-4 md:px-4')">
-        <nav :class="[
-            'mx-auto bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl shadow-lg transition-all duration-300',
-            fullWidth
-                ? 'max-w-full rounded-none border-b border-zinc-200 dark:border-zinc-700'
-                : (isScrolled
-                    ? 'max-w-full rounded-none border-b border-zinc-200 dark:border-zinc-700'
-                    : 'max-w-full rounded-none border-b border-zinc-200 dark:border-zinc-700 md:max-w-[80%] md:rounded-2xl md:border md:border-zinc-200 md:dark:border-zinc-700')
-        ]">
+    <header class="fixed w-full top-0 left-0 z-50 transition-all duration-300">
+        <nav class="w-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl shadow-lg border-b border-zinc-200 dark:border-zinc-700">
             <div class="flex justify-between items-center h-16 px-6">
                 <!-- Logo -->
                 <Link href="/" class="flex items-center space-x-3 group cursor-pointer">
@@ -143,12 +136,20 @@
                                 v-if="userMenuOpen"
                                 class="absolute right-0 mt-2 w-48 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl shadow-lg overflow-hidden"
                             >
-                                <a href="#" class="block px-4 py-3 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">
+                                <Link
+                                    href="/profile"
+                                    @click="userMenuOpen = false"
+                                    class="block px-4 py-3 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+                                >
                                     Profile
-                                </a>
-                                <a href="#" class="block px-4 py-3 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">
-                                    Settings
-                                </a>
+                                </Link>
+                                <Link
+                                    href="/dashboard"
+                                    @click="userMenuOpen = false"
+                                    class="block px-4 py-3 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+                                >
+                                    Dashboard
+                                </Link>
                                 <div class="border-t border-zinc-200 dark:border-zinc-700"></div>
                                 <button
                                     @click="handleLogout"
@@ -280,12 +281,20 @@
                             {{ user?.name }}
                         </span>
                     </div>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg">
+                    <Link
+                        href="/profile"
+                        @click="mobileMenuOpen = false"
+                        class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg"
+                    >
                         Profile
-                    </a>
-                    <a href="#" class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg">
-                        Settings
-                    </a>
+                    </Link>
+                    <Link
+                        href="/dashboard"
+                        @click="mobileMenuOpen = false"
+                        class="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg"
+                    >
+                        Dashboard
+                    </Link>
                     <button
                         @click="handleLogout"
                         class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg"
@@ -307,13 +316,6 @@ import { Link, usePage, router } from '@inertiajs/vue3';
 import { useDarkMode } from '@/composables/useDarkMode';
 import { useAuth } from '@/composables/useAuth';
 import AuthModal from '@/Components/Auth/AuthModal.vue';
-
-const props = defineProps({
-    fullWidth: {
-        type: Boolean,
-        default: false
-    }
-});
 
 const mobileMenuOpen = ref(false);
 const userMenuOpen = ref(false);

@@ -37,4 +37,11 @@ Route::middleware('auth:customer')->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard/Index');
     })->name('dashboard');
+
+    Route::get('/profile', function () {
+        return Inertia::render('Dashboard/Profile');
+    })->name('profile');
+
+    Route::put('/profile/update', [AuthController::class, 'updateProfile']);
+    Route::put('/profile/password', [AuthController::class, 'updatePassword']);
 });

@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
-    <Header :fullWidth="true" />
+    <Header />
     <Sidebar />
 
     <main :class="['pt-16 transition-all duration-300', sidebarCollapsed ? 'md:pl-16' : 'md:pl-64']">
