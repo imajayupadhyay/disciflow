@@ -12,6 +12,10 @@ Route::get('/trackers', function () {
     return Inertia::render('Trackers/Index');
 })->name('trackers.index');
 
+Route::get('/support', function () {
+    return Inertia::render('Support/Index');
+})->name('support.index');
+
 // Authentication routes
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);

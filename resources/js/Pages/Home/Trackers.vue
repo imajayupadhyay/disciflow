@@ -1,5 +1,5 @@
 <template>
-    <section id="trackers" class="relative py-24 bg-zinc-50 dark:bg-zinc-950 transition-colors duration-500">
+    <section id="trackers" class="relative py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Section Header -->
             <div class="text-center mb-16">

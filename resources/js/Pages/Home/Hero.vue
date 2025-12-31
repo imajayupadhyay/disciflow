@@ -1,21 +1,5 @@
 <template>
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-black transition-colors duration-500">
-        <!-- Animated SVG Background -->
-        <div class="absolute inset-0 overflow-hidden">
-            <!-- Minimal Grid Pattern -->
-            <svg class="absolute w-full h-full opacity-[0.03] dark:opacity-[0.05]" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-                        <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" class="text-zinc-900 dark:text-zinc-100" stroke-width="1"/>
-                    </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid)"/>
-            </svg>
-
-            <!-- Subtle Gradient Orbs -->
-            <div class="absolute top-1/4 -left-48 w-96 h-96 bg-amber-900/10 dark:bg-amber-600/5 rounded-full blur-3xl animate-float"></div>
-            <div class="absolute bottom-1/4 -right-48 w-96 h-96 bg-zinc-900/10 dark:bg-zinc-600/5 rounded-full blur-3xl animate-float-delayed"></div>
-        </div>
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
 
         <!-- Content -->
         <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">

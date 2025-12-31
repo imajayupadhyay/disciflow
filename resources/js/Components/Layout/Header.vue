@@ -45,9 +45,17 @@
                     >
                         Trackers
                     </Link>
-                    <a href="#" class="px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg transition-all duration-200">
-                        Analytics
-                    </a>
+                    <Link
+                        href="/support"
+                        :class="[
+                            'px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200',
+                            isActive('/support')
+                                ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+                                : 'text-zinc-700 dark:text-zinc-300 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+                        ]"
+                    >
+                        Support
+                    </Link>
                 </div>
 
                 <!-- Right Side - Theme Toggle & Auth -->
@@ -168,9 +176,17 @@
                 >
                     Trackers
                 </Link>
-                <a href="#" class="block px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg transition-all">
-                    Analytics
-                </a>
+                <Link
+                    href="/support"
+                    :class="[
+                        'block px-4 py-2 text-sm font-medium rounded-lg transition-all',
+                        isActive('/support')
+                            ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+                            : 'text-zinc-700 dark:text-zinc-300 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+                    ]"
+                >
+                    Support
+                </Link>
 
                 <!-- Mobile Theme Toggle -->
                 <div class="flex items-center bg-zinc-100 dark:bg-zinc-800 rounded-full p-1 border border-zinc-200 dark:border-zinc-700">
