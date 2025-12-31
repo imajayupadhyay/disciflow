@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import axios from 'axios';
+import { router } from '@inertiajs/vue3';
 
 const user = ref(null);
 const isAuthenticated = ref(false);
@@ -13,6 +14,10 @@ export function useAuth() {
                 user.value = response.data.user;
                 isAuthenticated.value = true;
                 localStorage.setItem('user', JSON.stringify(response.data.user));
+
+                // Redirect to dashboard after successful registration
+                router.visit('/dashboard');
+
                 return { success: true };
             }
         } catch (error) {
@@ -32,6 +37,10 @@ export function useAuth() {
                 user.value = response.data.user;
                 isAuthenticated.value = true;
                 localStorage.setItem('user', JSON.stringify(response.data.user));
+
+                // Redirect to dashboard after successful login
+                router.visit('/dashboard');
+
                 return { success: true };
             }
         } catch (error) {
@@ -52,6 +61,9 @@ export function useAuth() {
             user.value = null;
             isAuthenticated.value = false;
             localStorage.removeItem('user');
+
+            // Redirect to home page after logout
+            router.visit('/');
         }
     };
 

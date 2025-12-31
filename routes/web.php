@@ -31,3 +31,10 @@ Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/logout', [AuthController::class, 'logout']);
 Route::get('/auth/user', [AuthController::class, 'user']);
+
+// Protected customer routes
+Route::middleware('auth:customer')->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard/Index');
+    })->name('dashboard');
+});

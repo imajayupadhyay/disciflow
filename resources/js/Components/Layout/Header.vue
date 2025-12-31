@@ -1,10 +1,12 @@
 <template>
-    <header class="fixed w-full top-0 left-0 z-50 transition-all duration-300" :class="isScrolled ? 'p-0' : 'p-0 md:py-4 md:px-4'">
+    <header class="fixed w-full top-0 left-0 z-50 transition-all duration-300" :class="fullWidth ? 'p-0' : (isScrolled ? 'p-0' : 'p-0 md:py-4 md:px-4')">
         <nav :class="[
             'mx-auto bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl shadow-lg transition-all duration-300',
-            isScrolled
+            fullWidth
                 ? 'max-w-full rounded-none border-b border-zinc-200 dark:border-zinc-700'
-                : 'max-w-full rounded-none border-b border-zinc-200 dark:border-zinc-700 md:max-w-[80%] md:rounded-2xl md:border md:border-zinc-200 md:dark:border-zinc-700'
+                : (isScrolled
+                    ? 'max-w-full rounded-none border-b border-zinc-200 dark:border-zinc-700'
+                    : 'max-w-full rounded-none border-b border-zinc-200 dark:border-zinc-700 md:max-w-[80%] md:rounded-2xl md:border md:border-zinc-200 md:dark:border-zinc-700')
         ]">
             <div class="flex justify-between items-center h-16 px-6">
                 <!-- Logo -->
@@ -67,6 +69,17 @@
                     >
                         Support
                     </Link>
+                    <button
+                        @click="handleDashboardClick"
+                        :class="[
+                            'px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200',
+                            isActive('/dashboard')
+                                ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+                                : 'text-zinc-700 dark:text-zinc-300 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+                        ]"
+                    >
+                        Dashboard
+                    </button>
                 </div>
 
                 <!-- Right Side - Theme Toggle & Auth -->
@@ -209,6 +222,17 @@
                 >
                     Support
                 </Link>
+                <button
+                    @click="handleDashboardClick"
+                    :class="[
+                        'block w-full text-left px-4 py-2 text-sm font-medium rounded-lg transition-all',
+                        isActive('/dashboard')
+                            ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+                            : 'text-zinc-700 dark:text-zinc-300 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+                    ]"
+                >
+                    Dashboard
+                </button>
 
                 <!-- Mobile Theme Toggle -->
                 <div class="flex items-center bg-zinc-100 dark:bg-zinc-800 rounded-full p-1 border border-zinc-200 dark:border-zinc-700">
@@ -279,10 +303,17 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, usePage, router } from '@inertiajs/vue3';
 import { useDarkMode } from '@/composables/useDarkMode';
 import { useAuth } from '@/composables/useAuth';
 import AuthModal from '@/Components/Auth/AuthModal.vue';
+
+const props = defineProps({
+    fullWidth: {
+        type: Boolean,
+        default: false
+    }
+});
 
 const mobileMenuOpen = ref(false);
 const userMenuOpen = ref(false);
@@ -314,6 +345,15 @@ const handleLogout = () => {
     logout();
     userMenuOpen.value = false;
     mobileMenuOpen.value = false;
+};
+
+const handleDashboardClick = () => {
+    if (isAuthenticated.value) {
+        router.visit('/dashboard');
+        mobileMenuOpen.value = false;
+    } else {
+        showAuthModal.value = true;
+    }
 };
 
 const handleScroll = () => {
