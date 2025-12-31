@@ -19,11 +19,11 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
 import Header from '@/Components/Layout/Header.vue';
 import Sidebar from './Components/Sidebar.vue';
 import { useAuth } from '@/composables/useAuth';
+import { useSidebar } from '@/composables/useSidebar';
 
 const { user } = useAuth();
-const sidebarCollapsed = inject('sidebarCollapsed');
+const { isCollapsed: sidebarCollapsed } = useSidebar();
 </script>

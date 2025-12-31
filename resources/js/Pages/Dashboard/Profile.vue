@@ -214,14 +214,15 @@
 </template>
 
 <script setup>
-import { ref, inject, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useAuth } from '@/composables/useAuth';
+import { useSidebar } from '@/composables/useSidebar';
 import Header from '@/Components/Layout/Header.vue';
 import Sidebar from './Components/Sidebar.vue';
 import axios from 'axios';
 
 const { user, initAuth } = useAuth();
-const sidebarCollapsed = inject('sidebarCollapsed');
+const { isCollapsed: sidebarCollapsed } = useSidebar();
 
 // Profile Form
 const profileForm = ref({

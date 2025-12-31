@@ -45,33 +45,61 @@
         <!-- Trackers List -->
         <div class="flex-1 overflow-y-auto p-2">
           <nav class="space-y-1">
-            <a
-              v-for="tracker in trackers"
-              :key="tracker.id"
-              href="#"
-              :class="[
-                'flex items-center rounded-lg transition-all duration-200',
-                isCollapsed ? 'justify-center p-3' : 'px-3 py-2 space-x-3',
-                tracker.active
-                  ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
-                  : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
-              ]"
-              :title="isCollapsed ? tracker.name : ''"
-            >
-              <div
+            <!-- Budget Calculator with Dropdown -->
+            <div>
+              <button
+                @click="budgetDropdownOpen = !budgetDropdownOpen"
                 :class="[
-                  'flex items-center justify-center rounded-lg',
-                  isCollapsed ? 'w-8 h-8' : 'w-8 h-8'
+                  'w-full flex items-center rounded-lg transition-all duration-200',
+                  isCollapsed ? 'justify-center p-3' : 'px-3 py-2 justify-between',
+                  isActiveRoute('/trackers/budget-calculator')
+                    ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+                    : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
                 ]"
-                v-html="tracker.icon"
-              ></div>
-              <span
-                v-show="!isCollapsed"
-                class="font-medium text-sm transition-opacity duration-200"
+                :title="isCollapsed ? 'Budget Calculator' : ''"
               >
-                {{ tracker.name }}
-              </span>
-            </a>
+                <div class="flex items-center" :class="isCollapsed ? '' : 'space-x-3'">
+                  <div class="flex items-center justify-center w-8 h-8">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                  </div>
+                  <span v-show="!isCollapsed" class="font-medium text-sm">
+                    Budget Calculator
+                  </span>
+                </div>
+                <svg
+                  v-show="!isCollapsed"
+                  :class="['w-4 h-4 transition-transform duration-200', budgetDropdownOpen ? 'rotate-180' : '']"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+
+              <!-- Dropdown Menu -->
+              <div
+                v-show="budgetDropdownOpen && !isCollapsed"
+                class="mt-1 ml-6 space-y-1"
+              >
+                <Link
+                  v-for="item in budgetMenuItems"
+                  :key="item.id"
+                  :href="item.route"
+                  :class="[
+                    'flex items-center space-x-2 px-3 py-2 rounded-lg text-sm transition-all duration-200',
+                    isActiveRoute(item.route)
+                      ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                  ]"
+                >
+                  <div v-html="item.icon"></div>
+                  <span>{{ item.name }}</span>
+                </Link>
+              </div>
+            </div>
           </nav>
         </div>
 
@@ -109,64 +137,38 @@
 </template>
 
 <script setup>
-import { ref, provide } from 'vue';
+import { ref } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import { useSidebar } from '@/composables/useSidebar';
 
-const isCollapsed = ref(false);
+const { isCollapsed, toggleSidebar } = useSidebar();
 
-provide('sidebarCollapsed', isCollapsed);
+const budgetDropdownOpen = ref(false);
 
-const trackers = ref([
+const page = usePage();
+
+const isActiveRoute = (route) => {
+  return page.url.startsWith(route);
+};
+
+const budgetMenuItems = ref([
   {
-    id: 1,
-    name: 'Habit Tracker',
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
-    active: true
+    id: 'categories',
+    name: 'Categories',
+    route: '/trackers/budget-calculator/categories',
+    icon: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>'
   },
   {
-    id: 2,
-    name: 'Water Intake',
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>',
-    active: false
+    id: 'budget',
+    name: 'Budget',
+    route: '/trackers/budget-calculator/budget',
+    icon: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
   },
   {
-    id: 3,
-    name: 'Sleep Tracker',
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>',
-    active: false
-  },
-  {
-    id: 4,
-    name: 'Exercise Log',
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
-    active: false
-  },
-  {
-    id: 5,
-    name: 'Mood Tracker',
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
-    active: false
-  },
-  {
-    id: 6,
-    name: 'Reading Log',
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>',
-    active: false
-  },
-  {
-    id: 7,
-    name: 'Meditation',
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>',
-    active: false
-  },
-  {
-    id: 8,
-    name: 'Productivity',
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>',
-    active: false
+    id: 'transactions',
+    name: 'Income / Expense',
+    route: '/trackers/budget-calculator/transactions',
+    icon: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>'
   }
 ]);
-
-const toggleSidebar = () => {
-  isCollapsed.value = !isCollapsed.value;
-};
 </script>
