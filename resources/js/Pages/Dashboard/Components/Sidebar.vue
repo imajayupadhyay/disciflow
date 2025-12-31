@@ -143,13 +143,14 @@ import { useSidebar } from '@/composables/useSidebar';
 
 const { isCollapsed, toggleSidebar } = useSidebar();
 
-const budgetDropdownOpen = ref(false);
-
 const page = usePage();
 
 const isActiveRoute = (route) => {
   return page.url.startsWith(route);
 };
+
+// Auto-open dropdown if user is on a budget calculator page
+const budgetDropdownOpen = ref(isActiveRoute('/trackers/budget-calculator'));
 
 const budgetMenuItems = ref([
   {
