@@ -168,6 +168,26 @@
                             Can't find what you're looking for? We're here to help
                         </p>
                     </div>
+                    <!-- Success Message -->
+                    <div v-if="successMessage" class="mb-6 p-4 bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-600 dark:text-green-500 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <p class="text-sm text-green-700 dark:text-green-400 font-medium">{{ successMessage }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div v-if="errorMessage" class="mb-6 p-4 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-red-600 dark:text-red-500 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <p class="text-sm text-red-700 dark:text-red-400 font-medium">{{ errorMessage }}</p>
+                        </div>
+                    </div>
+
                     <form @submit.prevent="handleSubmit" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
@@ -178,8 +198,9 @@
                                     v-model="contactForm.name"
                                     type="text"
                                     required
+                                    :disabled="isSubmitting"
                                     placeholder="John Doe"
-                                    class="w-full px-4 py-3.5 bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-zinc-900 dark:text-white placeholder-zinc-400"
+                                    class="w-full px-4 py-3.5 bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-zinc-900 dark:text-white placeholder-zinc-400 disabled:opacity-50 disabled:cursor-not-allowed"
                                 />
                             </div>
 
@@ -191,8 +212,9 @@
                                     v-model="contactForm.email"
                                     type="email"
                                     required
+                                    :disabled="isSubmitting"
                                     placeholder="your@email.com"
-                                    class="w-full px-4 py-3.5 bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-zinc-900 dark:text-white placeholder-zinc-400"
+                                    class="w-full px-4 py-3.5 bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-zinc-900 dark:text-white placeholder-zinc-400 disabled:opacity-50 disabled:cursor-not-allowed"
                                 />
                             </div>
                         </div>
@@ -204,7 +226,8 @@
                             <select
                                 v-model="contactForm.subject"
                                 required
-                                class="w-full px-4 py-3.5 bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-zinc-900 dark:text-white"
+                                :disabled="isSubmitting"
+                                class="w-full px-4 py-3.5 bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-zinc-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <option value="">Select a topic</option>
                                 <option value="getting-started">Getting Started</option>
@@ -223,16 +246,25 @@
                                 v-model="contactForm.message"
                                 required
                                 rows="6"
+                                :disabled="isSubmitting"
                                 placeholder="Tell us how we can help you..."
-                                class="w-full px-4 py-3.5 bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-zinc-900 dark:text-white placeholder-zinc-400 resize-none"
+                                class="w-full px-4 py-3.5 bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all text-zinc-900 dark:text-white placeholder-zinc-400 resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                             ></textarea>
                         </div>
 
                         <button
                             type="submit"
-                            class="w-full px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-800 dark:from-amber-500 dark:to-amber-700 text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-amber-500/30 hover:-translate-y-0.5 transition-all duration-200 text-lg"
+                            :disabled="isSubmitting"
+                            class="w-full px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-800 dark:from-amber-500 dark:to-amber-700 text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-amber-500/30 hover:-translate-y-0.5 transition-all duration-200 text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                         >
-                            Send Message
+                            <span v-if="isSubmitting" class="flex items-center justify-center">
+                                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Sending...
+                            </span>
+                            <span v-else>Send Message</span>
                         </button>
                     </form>
                 </div>
@@ -250,8 +282,12 @@ import { ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import Header from '@/Components/Layout/Header.vue';
 import Footer from '@/Components/Layout/Footer.vue';
+import axios from 'axios';
 
 const searchQuery = ref('');
+const isSubmitting = ref(false);
+const successMessage = ref('');
+const errorMessage = ref('');
 
 const categories = [
     {
@@ -314,15 +350,51 @@ const contactForm = ref({
     message: ''
 });
 
-const handleSubmit = () => {
-    // TODO: Implement contact form submission
-    alert('Thank you for contacting us! We\'ll get back to you soon.');
-    contactForm.value = {
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-    };
+const handleSubmit = async () => {
+    // Clear previous messages
+    successMessage.value = '';
+    errorMessage.value = '';
+    isSubmitting.value = true;
+
+    try {
+        const response = await axios.post('/support/submit', contactForm.value);
+
+        if (response.data.success) {
+            successMessage.value = response.data.message;
+
+            // Reset form
+            contactForm.value = {
+                name: '',
+                email: '',
+                subject: '',
+                message: ''
+            };
+
+            // Scroll to success message
+            setTimeout(() => {
+                successMessage.value = '';
+            }, 5000);
+        }
+    } catch (error) {
+        console.error('Support form submission error:', error);
+
+        if (error.response?.data?.errors) {
+            // Validation errors
+            const errors = error.response.data.errors;
+            errorMessage.value = Object.values(errors).flat().join(' ');
+        } else if (error.response?.data?.message) {
+            errorMessage.value = error.response.data.message;
+        } else {
+            errorMessage.value = 'An error occurred while submitting your request. Please try again.';
+        }
+
+        // Clear error after 5 seconds
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 5000);
+    } finally {
+        isSubmitting.value = false;
+    }
 };
 </script>
 

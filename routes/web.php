@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\SupportController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -40,6 +41,10 @@ Route::get('/auth/user', [AuthController::class, 'user']);
 // Google OAuth routes
 Route::get('/auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('auth.google.redirect');
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+
+// Support routes
+Route::post('/support/submit', [SupportController::class, 'submit'])->name('support.submit');
+Route::get('/support/tickets', [SupportController::class, 'getCustomerTickets'])->middleware('customer.auth')->name('support.tickets');
 
 // Protected customer routes (shows 404 if not authenticated)
 Route::middleware('customer.auth')->group(function () {
