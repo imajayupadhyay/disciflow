@@ -37,6 +37,10 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/logout', [AuthController::class, 'logout']);
 Route::get('/auth/user', [AuthController::class, 'user']);
 
+// Google OAuth routes
+Route::get('/auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('auth.google.redirect');
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+
 // Protected customer routes (shows 404 if not authenticated)
 Route::middleware('customer.auth')->group(function () {
     Route::get('/dashboard', function () {

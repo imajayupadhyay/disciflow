@@ -23,14 +23,6 @@
 
                 <!-- Modal Header -->
                 <div class="p-8 pb-6">
-                    <div class="flex items-center justify-center mb-6">
-                        <div class="w-12 h-12 bg-gradient-to-br from-amber-600 to-amber-800 dark:from-amber-500 dark:to-amber-700 rounded-xl flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                            </svg>
-                        </div>
-                    </div>
-
                     <!-- Login/Signup Toggle -->
                     <div class="flex items-center bg-zinc-100 dark:bg-zinc-800 rounded-full p-1 border border-zinc-200 dark:border-zinc-700 mb-6">
                         <button
@@ -386,8 +378,8 @@ const handleSignup = async () => {
 };
 
 const handleGoogleAuth = () => {
-    // TODO: Implement Google OAuth
-    alert('Google OAuth will be configured later');
+    // Redirect to Google OAuth
+    window.location.href = '/auth/google/redirect';
 };
 </script>
 

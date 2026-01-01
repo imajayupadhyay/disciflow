@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -165,5 +166,55 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Password updated successfully'
         ]);
+    }
+
+    /**
+     * Redirect to Google OAuth page
+     */
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    /**
+     * Handle Google OAuth callback
+     */
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->user();
+
+            // Find or create customer
+            $customer = Customer::where('google_id', $googleUser->getId())
+                ->orWhere('email', $googleUser->getEmail())
+                ->first();
+
+            if ($customer) {
+                // Update Google ID if it's missing
+                if (!$customer->google_id) {
+                    $customer->update([
+                        'google_id' => $googleUser->getId(),
+                    ]);
+                }
+            } else {
+                // Create new customer
+                $customer = Customer::create([
+                    'name' => $googleUser->getName(),
+                    'email' => $googleUser->getEmail(),
+                    'google_id' => $googleUser->getId(),
+                    'password' => Hash::make(uniqid()), // Random password for OAuth users
+                ]);
+            }
+
+            // Login the customer
+            Auth::guard('customer')->login($customer, true);
+
+            // Redirect to dashboard
+            return redirect('/dashboard');
+        } catch (\Exception $e) {
+            // Redirect back to home on error
+            return redirect('/')
+                ->with('error', 'Google authentication failed. Please try again.');
+        }
     }
 }
