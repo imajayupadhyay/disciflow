@@ -48,6 +48,10 @@ Route::middleware('customer.auth')->group(function () {
 
     // Budget Calculator Tracker Routes
     Route::prefix('trackers/budget-calculator')->group(function () {
+        Route::get('/dashboard', function () {
+            return Inertia::render('Dashboard/Trackers/BudgetCalculator/Dashboard');
+        })->name('trackers.budget.dashboard');
+
         Route::get('/categories', function () {
             return Inertia::render('Dashboard/Trackers/BudgetCalculator/Categories');
         })->name('trackers.budget.categories');
@@ -59,10 +63,17 @@ Route::middleware('customer.auth')->group(function () {
         Route::get('/transactions', function () {
             return Inertia::render('Dashboard/Trackers/BudgetCalculator/Transactions');
         })->name('trackers.budget.transactions');
+
+        Route::get('/export', function () {
+            return Inertia::render('Dashboard/Trackers/BudgetCalculator/Export');
+        })->name('trackers.budget.export');
     });
 
     // Budget Calculator API Routes
     Route::prefix('api/budget')->group(function () {
+        // Dashboard
+        Route::get('/dashboard', [BudgetController::class, 'getDashboardData']);
+
         // Categories
         Route::get('/categories', [BudgetController::class, 'getCategories']);
         Route::post('/categories', [BudgetController::class, 'storeCategory']);
@@ -80,5 +91,9 @@ Route::middleware('customer.auth')->group(function () {
         Route::post('/transactions', [BudgetController::class, 'storeTransaction']);
         Route::put('/transactions/{id}', [BudgetController::class, 'updateTransaction']);
         Route::delete('/transactions/{id}', [BudgetController::class, 'deleteTransaction']);
+
+        // Exports
+        Route::get('/transactions/export/excel', [BudgetController::class, 'exportExcel']);
+        Route::get('/transactions/export/pdf', [BudgetController::class, 'exportPdf']);
     });
 });

@@ -3,9 +3,8 @@
 
   <div class="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
     <Header />
-    <Sidebar />
 
-    <main :class="['pt-16 transition-all duration-300', sidebarCollapsed ? 'md:pl-16' : 'md:pl-64']">
+    <main class="pt-16">
       <div class="container mx-auto px-4 py-8 max-w-4xl">
         <!-- Page Header -->
         <div class="mb-8">
@@ -219,13 +218,10 @@
 import { ref, onMounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import { useAuth } from '@/composables/useAuth';
-import { useSidebar } from '@/composables/useSidebar';
 import Header from '@/Components/Layout/Header.vue';
-import Sidebar from './Components/Sidebar.vue';
 import axios from 'axios';
 
 const { user, initAuth } = useAuth();
-const { isCollapsed: sidebarCollapsed } = useSidebar();
 
 // Profile Form
 const profileForm = ref({

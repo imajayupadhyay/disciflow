@@ -8,110 +8,92 @@
     <main :class="['pt-16 transition-all duration-300', sidebarCollapsed ? 'md:pl-16' : 'md:pl-64']">
       <div class="container mx-auto px-4 py-8 max-w-7xl">
         <!-- Page Header -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
           <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Transactions</h1>
             <p class="text-gray-600 dark:text-gray-400">Track your income and expenses</p>
           </div>
-          <button
-            @click="openAddModal()"
-            class="mt-4 md:mt-0 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-800 dark:from-amber-500 dark:to-amber-700 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-amber-500/30 transition-all duration-200 flex items-center space-x-2"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
-            <span>Add Transaction</span>
-          </button>
-        </div>
-
-        <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <!-- Total Income -->
-          <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-6 border border-green-200 dark:border-green-800">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm font-medium text-green-700 dark:text-green-400">Total Income</span>
-              <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-                </svg>
-              </div>
-            </div>
-            <p class="text-3xl font-bold text-green-700 dark:text-green-400">${{ formatNumber(summary.totalIncome) }}</p>
-          </div>
-
-          <!-- Total Expenses -->
-          <div class="bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/20 rounded-xl p-6 border border-red-200 dark:border-red-800">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm font-medium text-red-700 dark:text-red-400">Total Expenses</span>
-              <div class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-                </svg>
-              </div>
-            </div>
-            <p class="text-3xl font-bold text-red-700 dark:text-red-400">${{ formatNumber(summary.totalExpenses) }}</p>
-          </div>
-
-          <!-- Net Balance -->
-          <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm font-medium text-blue-700 dark:text-blue-400">Net Balance</span>
-              <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-              </div>
-            </div>
-            <p class="text-3xl font-bold text-blue-700 dark:text-blue-400">${{ formatNumber(summary.balance) }}</p>
+          <div class="flex items-center space-x-3 mt-4 md:mt-0">
+            <button
+              @click="openAddModal()"
+              class="px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-800 dark:from-amber-500 dark:to-amber-700 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-amber-500/30 transition-all duration-200 flex items-center space-x-2"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+              <span>Add Transaction</span>
+            </button>
           </div>
         </div>
 
-        <!-- Filters -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-          <!-- Type Filter -->
-          <div class="inline-flex bg-zinc-100 dark:bg-zinc-800 rounded-lg p-1">
-            <button
-              @click="activeType = 'all'"
-              :class="[
-                'px-4 py-2 rounded-md text-sm font-medium transition-all duration-200',
-                activeType === 'all'
-                  ? 'bg-white dark:bg-zinc-900 text-amber-600 dark:text-amber-400 shadow'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-              ]"
-            >
-              All
-            </button>
-            <button
-              @click="activeType = 'income'"
-              :class="[
-                'px-4 py-2 rounded-md text-sm font-medium transition-all duration-200',
-                activeType === 'income'
-                  ? 'bg-white dark:bg-zinc-900 text-green-600 dark:text-green-400 shadow'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-              ]"
-            >
-              Income
-            </button>
-            <button
-              @click="activeType = 'expense'"
-              :class="[
-                'px-4 py-2 rounded-md text-sm font-medium transition-all duration-200',
-                activeType === 'expense'
-                  ? 'bg-white dark:bg-zinc-900 text-red-600 dark:text-red-400 shadow'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-              ]"
-            >
-              Expenses
-            </button>
+        <!-- Filters Bar -->
+        <div class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-4 mb-6">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <!-- Date From -->
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Date From</label>
+              <input
+                v-model="startDate"
+                type="date"
+                class="w-full px-3 py-2 text-sm border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all"
+              />
+            </div>
+
+            <!-- Date To -->
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Date To</label>
+              <input
+                v-model="endDate"
+                type="date"
+                class="w-full px-3 py-2 text-sm border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all"
+              />
+            </div>
+
+            <!-- Category Filter -->
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Category</label>
+              <select
+                v-model="categoryFilter"
+                class="w-full px-3 py-2 text-sm border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all"
+              >
+                <option value="">All Categories</option>
+                <option
+                  v-for="category in categories"
+                  :key="category.id"
+                  :value="category.id"
+                >
+                  {{ category.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Payment Method Filter -->
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Payment Method</label>
+              <select
+                v-model="paymentMethodFilter"
+                class="w-full px-3 py-2 text-sm border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all"
+              >
+                <option value="">All Methods</option>
+                <option
+                  v-for="method in paymentMethods"
+                  :key="method"
+                  :value="method"
+                >
+                  {{ method }}
+                </option>
+              </select>
+            </div>
           </div>
 
-          <!-- Date Filter -->
-          <div class="flex items-center space-x-3">
-            <input
-              v-model="dateFilter"
-              type="month"
-              class="px-4 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 transition-all"
-            />
+          <!-- Clear Filters Button -->
+          <div v-if="hasActiveFilters" class="mt-3 flex justify-end">
+            <button
+              @click="clearFilters"
+              class="px-4 py-1.5 text-xs bg-zinc-100 dark:bg-zinc-900 text-gray-700 dark:text-gray-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-lg transition-colors font-medium border border-zinc-200 dark:border-zinc-700"
+            >
+              Clear Filters
+            </button>
           </div>
         </div>
 
@@ -131,7 +113,7 @@
               </thead>
               <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">
                 <tr
-                  v-for="transaction in filteredTransactions"
+                  v-for="transaction in paginatedTransactions"
                   :key="transaction.id"
                   class="hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
                 >
@@ -195,7 +177,7 @@
 
             <!-- Empty State -->
             <div
-              v-if="filteredTransactions.length === 0"
+              v-if="paginatedTransactions.length === 0"
               class="flex flex-col items-center justify-center py-16"
             >
               <div class="w-16 h-16 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mb-4">
@@ -211,6 +193,71 @@
               >
                 Add Transaction
               </button>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <div v-if="filteredTransactions.length > 0" class="px-6 py-4 border-t border-zinc-200 dark:border-zinc-700">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div class="text-sm text-gray-600 dark:text-gray-400">
+                Showing {{ ((currentPage - 1) * perPage) + 1 }} to {{ Math.min(currentPage * perPage, filteredTransactions.length) }} of {{ filteredTransactions.length }} transactions
+              </div>
+              <div class="flex items-center space-x-2">
+                <button
+                  @click="currentPage = 1"
+                  :disabled="currentPage === 1"
+                  class="px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 text-gray-700 dark:text-gray-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                  </svg>
+                </button>
+                <button
+                  @click="currentPage--"
+                  :disabled="currentPage === 1"
+                  class="px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 text-gray-700 dark:text-gray-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                  </svg>
+                </button>
+                <div class="flex items-center space-x-1">
+                  <button
+                    v-for="page in visiblePages"
+                    :key="page"
+                    @click="typeof page === 'number' ? currentPage = page : null"
+                    :disabled="typeof page !== 'number'"
+                    :class="[
+                      'px-3 py-2 rounded-lg transition-colors',
+                      currentPage === page
+                        ? 'bg-amber-600 text-white'
+                        : typeof page === 'number'
+                          ? 'border border-zinc-300 dark:border-zinc-600 text-gray-700 dark:text-gray-300 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+                          : 'text-gray-400 dark:text-gray-600 cursor-default'
+                    ]"
+                  >
+                    {{ page }}
+                  </button>
+                </div>
+                <button
+                  @click="currentPage++"
+                  :disabled="currentPage === totalPages"
+                  class="px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 text-gray-700 dark:text-gray-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+                <button
+                  @click="currentPage = totalPages"
+                  :disabled="currentPage === totalPages"
+                  class="px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 text-gray-700 dark:text-gray-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -381,7 +428,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import Header from '@/Components/Layout/Header.vue';
-import Sidebar from '@/Pages/Dashboard/Components/Sidebar.vue';
+import Sidebar from './Components/Sidebar.vue';
 import { useSidebar } from '@/composables/useSidebar';
 import axios from 'axios';
 
@@ -390,8 +437,12 @@ const { isCollapsed: sidebarCollapsed } = useSidebar();
 const showAddModal = ref(false);
 const editingTransaction = ref(null);
 const loading = ref(false);
-const activeType = ref('all');
-const dateFilter = ref('');
+const currentPage = ref(1);
+const perPage = ref(10);
+const startDate = ref('');
+const endDate = ref('');
+const categoryFilter = ref('');
+const paymentMethodFilter = ref('');
 
 const form = ref({
   type: 'expense',
@@ -405,41 +456,92 @@ const form = ref({
 const transactions = ref([]);
 const categories = ref([]);
 
-const summary = computed(() => {
-  const totalIncome = transactions.value
-    .filter(t => t.type === 'income')
-    .reduce((sum, t) => sum + parseFloat(t.amount), 0);
-
-  const totalExpenses = transactions.value
-    .filter(t => t.type === 'expense')
-    .reduce((sum, t) => sum + parseFloat(t.amount), 0);
-
-  return {
-    totalIncome,
-    totalExpenses,
-    balance: totalIncome - totalExpenses
-  };
-});
-
 const availableCategories = computed(() => {
   return categories.value.filter(cat => cat.type === form.value.type);
+});
+
+const paymentMethods = computed(() => {
+  const methods = transactions.value
+    .map(t => t.payment_method)
+    .filter(method => method && method.trim() !== '');
+  return [...new Set(methods)].sort();
 });
 
 const filteredTransactions = computed(() => {
   let filtered = transactions.value;
 
-  if (activeType.value !== 'all') {
-    filtered = filtered.filter(t => t.type === activeType.value);
+  if (categoryFilter.value) {
+    filtered = filtered.filter(t => t.category_id === categoryFilter.value);
   }
 
-  if (dateFilter.value) {
-    filtered = filtered.filter(t => {
-      const transactionMonth = t.transaction_date.substring(0, 7);
-      return transactionMonth === dateFilter.value;
-    });
+  if (paymentMethodFilter.value) {
+    filtered = filtered.filter(t => t.payment_method === paymentMethodFilter.value);
+  }
+
+  if (startDate.value) {
+    filtered = filtered.filter(t => t.transaction_date >= startDate.value);
+  }
+
+  if (endDate.value) {
+    filtered = filtered.filter(t => t.transaction_date <= endDate.value);
   }
 
   return filtered.sort((a, b) => new Date(b.transaction_date) - new Date(a.transaction_date));
+});
+
+const hasActiveFilters = computed(() => {
+  return !!(startDate.value || endDate.value || categoryFilter.value || paymentMethodFilter.value);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredTransactions.value.length / perPage.value) || 1;
+});
+
+const visiblePages = computed(() => {
+  const pages = [];
+  const total = totalPages.value;
+  const current = currentPage.value;
+
+  if (total <= 7) {
+    // Show all pages if total is 7 or less
+    for (let i = 1; i <= total; i++) {
+      pages.push(i);
+    }
+  } else {
+    // Always show first page
+    pages.push(1);
+
+    if (current > 3) {
+      pages.push('...');
+    }
+
+    // Show pages around current page
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+
+    for (let i = start; i <= end; i++) {
+      if (!pages.includes(i)) {
+        pages.push(i);
+      }
+    }
+
+    if (current < total - 2) {
+      pages.push('...');
+    }
+
+    // Always show last page
+    if (!pages.includes(total)) {
+      pages.push(total);
+    }
+  }
+
+  return pages;
+});
+
+const paginatedTransactions = computed(() => {
+  const start = (currentPage.value - 1) * perPage.value;
+  const end = start + perPage.value;
+  return filteredTransactions.value.slice(start, end);
 });
 
 const formatNumber = (num) => {
@@ -471,7 +573,6 @@ const fetchCategories = async () => {
 
 const openAddModal = () => {
   showAddModal.value = true;
-  form.value.type = activeType.value === 'all' ? 'expense' : activeType.value;
 };
 
 const saveTransaction = async () => {
@@ -528,17 +629,25 @@ const closeModal = () => {
   };
 };
 
+const clearFilters = () => {
+  startDate.value = '';
+  endDate.value = '';
+  categoryFilter.value = '';
+  paymentMethodFilter.value = '';
+};
+
 // Reset category when type changes
 watch(() => form.value.type, () => {
   form.value.category_id = '';
 });
 
+// Reset currentPage when filters change
+watch([categoryFilter, paymentMethodFilter, startDate, endDate], () => {
+  currentPage.value = 1;
+});
+
 onMounted(() => {
   fetchTransactions();
   fetchCategories();
-
-  // Set current month as default filter
-  const today = new Date();
-  dateFilter.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
 });
 </script>

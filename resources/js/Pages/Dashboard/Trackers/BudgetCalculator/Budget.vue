@@ -289,7 +289,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import Header from '@/Components/Layout/Header.vue';
-import Sidebar from '@/Pages/Dashboard/Components/Sidebar.vue';
+import Sidebar from './Components/Sidebar.vue';
 import { useSidebar } from '@/composables/useSidebar';
 import axios from 'axios';
 
