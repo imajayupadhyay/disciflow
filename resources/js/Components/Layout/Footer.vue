@@ -79,7 +79,7 @@
             <div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
                 <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <p class="text-sm text-zinc-500 dark:text-zinc-500">
-                        © 2025 DisciFlow. Built with discipline.
+                        © 2026 DisciFlow. Built with discipline.
                     </p>
                     <div class="flex space-x-6">
                         <a href="#" class="text-sm text-zinc-500 dark:text-zinc-500 hover:text-amber-700 dark:hover:text-amber-500 transition-colors">Privacy</a>

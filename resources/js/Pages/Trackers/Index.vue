@@ -171,8 +171,8 @@ const trackers = [
             'Budget limits',
             'Savings goals'
         ],
-        actionText: 'Manage Budget',
-        route: '/coming-soon/budget'
+        actionText: 'Learn More',
+        route: '/trackers/budget-tracker'
     },
     {
         id: 'habit',

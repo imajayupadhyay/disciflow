@@ -13,6 +13,10 @@ Route::get('/trackers', function () {
     return Inertia::render('Trackers/Index');
 })->name('trackers.index');
 
+Route::get('/trackers/budget-tracker', function () {
+    return Inertia::render('Trackers/BudgetTrackers/Index');
+})->name('trackers.budget-tracker');
+
 Route::get('/support', function () {
     return Inertia::render('Support/Index');
 })->name('support.index');
