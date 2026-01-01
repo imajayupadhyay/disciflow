@@ -8,6 +8,7 @@ use App\Models\Transaction;
 use App\Models\BudgetAlert;
 use App\Models\PaymentMethod;
 use App\Exports\TransactionsExport;
+use App\Services\BudgetAlertService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -219,6 +220,19 @@ class BudgetController extends Controller
         ]);
 
         $transaction->load('category');
+
+        // Check alerts after transaction is created
+        $alertService = new BudgetAlertService();
+        $alertService->checkTransactionAgainstAlerts($transaction);
+
+        // Check all budget-related alerts
+        $activeAlerts = BudgetAlert::where('customer_id', $customer->id)
+            ->where('is_active', true)
+            ->get();
+
+        foreach ($activeAlerts as $alert) {
+            $alertService->checkAndTriggerAlert($alert);
+        }
 
         return response()->json([
             'success' => true,
