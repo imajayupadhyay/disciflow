@@ -8,13 +8,107 @@
     <main :class="['pt-16 transition-all duration-300', sidebarCollapsed ? 'md:pl-16' : 'md:pl-64']">
       <div class="container mx-auto px-4 py-8 max-w-7xl">
         <!-- Page Header -->
-        <div class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Budget Overview</h1>
-          <p class="text-gray-600 dark:text-gray-400">Your complete financial snapshot at a glance</p>
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Budget Overview</h1>
+            <p class="text-gray-600 dark:text-gray-400">Your complete financial snapshot at a glance</p>
+          </div>
+          <div class="mt-4 md:mt-0">
+            <button
+              @click="showCustomizeModal = true"
+              class="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-500 dark:to-indigo-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-200 flex items-center space-x-2"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+              </svg>
+              <span>Customize Dashboard</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Customize Dashboard Modal -->
+        <div
+          v-if="showCustomizeModal"
+          class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          @click.self="showCustomizeModal = false"
+        >
+          <div class="bg-white dark:bg-zinc-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-zinc-200 dark:border-zinc-700">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Customize Dashboard</h3>
+                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Choose which widgets to display on your dashboard</p>
+                </div>
+                <button
+                  @click="showCustomizeModal = false"
+                  class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
+                >
+                  <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
+              <div class="space-y-4">
+                <!-- Widget Toggle Item -->
+                <div
+                  v-for="(widget, key) in widgetConfig"
+                  :key="key"
+                  class="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:border-purple-300 dark:hover:border-purple-600 transition-all"
+                >
+                  <div class="flex items-center space-x-4">
+                    <div
+                      :class="[
+                        'w-10 h-10 rounded-lg flex items-center justify-center',
+                        widgetVisibility[key] ? 'bg-purple-500' : 'bg-gray-400'
+                      ]"
+                    >
+                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" v-html="widget.icon"></svg>
+                    </div>
+                    <div>
+                      <p class="font-semibold text-gray-900 dark:text-white">{{ widget.label }}</p>
+                      <p class="text-sm text-gray-600 dark:text-gray-400">{{ widget.description }}</p>
+                    </div>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      v-model="widgetVisibility[key]"
+                      @change="saveWidgetPreferences"
+                      class="sr-only peer"
+                    />
+                    <div class="w-14 h-7 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-purple-600"></div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-6 border-t border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900/50">
+              <div class="flex items-center justify-between">
+                <button
+                  @click="resetToDefault"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-zinc-800 rounded-lg border border-zinc-300 dark:border-zinc-600 transition-colors"
+                >
+                  Reset to Default
+                </button>
+                <button
+                  @click="showCustomizeModal = false"
+                  class="px-6 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-500 dark:to-indigo-500 text-white font-semibold rounded-lg hover:shadow-lg transition-all"
+                >
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div v-if="widgetVisibility.summaryCards" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <!-- Total Expenses -->
           <div class="bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/20 rounded-xl p-6 border border-red-200 dark:border-red-800">
             <div class="flex items-center justify-between mb-2">
@@ -61,7 +155,7 @@
         <!-- Charts Row 1 -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <!-- Income vs Expenses Chart -->
-          <div class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6">
+          <div v-if="widgetVisibility.incomeVsExpenses" class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Income vs Expenses</h3>
             <apexchart
               v-if="monthlyChartOptions"
@@ -73,7 +167,7 @@
           </div>
 
           <!-- Expenses by Category (Pie Chart) -->
-          <div class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6">
+          <div v-if="widgetVisibility.expensesByCategory" class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Expenses by Category</h3>
             <apexchart
               v-if="expensesPieOptions && dashboardData.expensesByCategory.length > 0"
@@ -91,7 +185,7 @@
         <!-- Charts Row 2 -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <!-- Income by Category (Pie Chart) -->
-          <div class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6">
+          <div v-if="widgetVisibility.incomeByCategory" class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Income by Category</h3>
             <apexchart
               v-if="incomePieOptions && dashboardData.incomeByCategory.length > 0"
@@ -106,7 +200,7 @@
           </div>
 
           <!-- Spending by Payment Method -->
-          <div class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6">
+          <div v-if="widgetVisibility.spendingByPaymentMethod" class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Spending by Payment Method</h3>
             <apexchart
               v-if="paymentMethodOptions && dashboardData.spendingByPaymentMethod.length > 0"
@@ -122,7 +216,7 @@
         </div>
 
         <!-- Budget Progress -->
-        <div class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6 mb-6">
+        <div v-if="widgetVisibility.budgetProgress" class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6 mb-6">
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Budget Progress</h3>
           <div v-if="dashboardData.budgets.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div
@@ -186,7 +280,7 @@
         </div>
 
         <!-- Recent Transactions -->
-        <div class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6">
+        <div v-if="widgetVisibility.recentTransactions" class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Recent Transactions</h3>
             <a
@@ -265,6 +359,94 @@ import VueApexCharts from 'vue3-apexcharts';
 const apexchart = VueApexCharts;
 
 const { isCollapsed: sidebarCollapsed } = useSidebar();
+
+// Customize Dashboard Modal State
+const showCustomizeModal = ref(false);
+
+// Widget Visibility State
+const widgetVisibility = ref({
+  summaryCards: true,
+  incomeVsExpenses: true,
+  expensesByCategory: true,
+  incomeByCategory: true,
+  spendingByPaymentMethod: true,
+  budgetProgress: true,
+  recentTransactions: true
+});
+
+// Widget Configuration for Modal
+const widgetConfig = {
+  summaryCards: {
+    label: 'Summary Cards',
+    description: 'Total Expenses, Income, and Net Balance',
+    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>'
+  },
+  incomeVsExpenses: {
+    label: 'Income vs Expenses Chart',
+    description: 'Monthly comparison bar chart',
+    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>'
+  },
+  expensesByCategory: {
+    label: 'Expenses by Category',
+    description: 'Donut chart showing expense breakdown',
+    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>'
+  },
+  incomeByCategory: {
+    label: 'Income by Category',
+    description: 'Donut chart showing income breakdown',
+    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>'
+  },
+  spendingByPaymentMethod: {
+    label: 'Spending by Payment Method',
+    description: 'Pie chart of payment method usage',
+    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>'
+  },
+  budgetProgress: {
+    label: 'Budget Progress',
+    description: 'Track spending against budgets',
+    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>'
+  },
+  recentTransactions: {
+    label: 'Recent Transactions',
+    description: 'Latest transaction history',
+    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>'
+  }
+};
+
+// Load Widget Preferences from localStorage
+const loadWidgetPreferences = () => {
+  try {
+    const savedPreferences = localStorage.getItem('budgetDashboardWidgets');
+    if (savedPreferences) {
+      widgetVisibility.value = JSON.parse(savedPreferences);
+    }
+  } catch (error) {
+    console.error('Error loading widget preferences:', error);
+  }
+};
+
+// Save Widget Preferences to localStorage
+const saveWidgetPreferences = () => {
+  try {
+    localStorage.setItem('budgetDashboardWidgets', JSON.stringify(widgetVisibility.value));
+  } catch (error) {
+    console.error('Error saving widget preferences:', error);
+  }
+};
+
+// Reset to Default Widget Visibility
+const resetToDefault = () => {
+  widgetVisibility.value = {
+    summaryCards: true,
+    incomeVsExpenses: true,
+    expensesByCategory: true,
+    incomeByCategory: true,
+    spendingByPaymentMethod: true,
+    budgetProgress: true,
+    recentTransactions: true
+  };
+  saveWidgetPreferences();
+};
 
 const dashboardData = ref({
   summary: {
@@ -490,6 +672,7 @@ const fetchDashboardData = async () => {
 };
 
 onMounted(() => {
+  loadWidgetPreferences();
   fetchDashboardData();
 });
 </script>

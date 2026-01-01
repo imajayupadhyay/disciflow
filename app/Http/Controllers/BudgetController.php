@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Budget;
 use App\Models\BudgetCategory;
 use App\Models\Transaction;
+use App\Models\BudgetAlert;
+use App\Models\PaymentMethod;
 use App\Exports\TransactionsExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -494,5 +496,209 @@ class BudgetController extends Controller
         ]);
 
         return $pdf->download('transactions_' . date('Y-m-d') . '.pdf');
+    }
+
+    // ==================== ALERTS ====================
+
+    public function getAlerts()
+    {
+        $customer = Auth::guard('customer')->user();
+
+        $alerts = BudgetAlert::where('customer_id', $customer->id)
+            ->with(['budget.category', 'category'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'alerts' => $alerts
+        ]);
+    }
+
+    public function storeAlert(Request $request)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'alert_type' => 'required|in:budget_exceeded,category_spending,daily_spending,transaction_threshold',
+            'budget_id' => 'nullable|exists:budgets,id',
+            'category_id' => 'nullable|exists:budget_categories,id',
+            'condition_type' => 'required|in:percentage,amount',
+            'threshold_value' => 'required|numeric|min:0',
+            'frequency' => 'required|in:once,daily,weekly,monthly',
+            'send_email' => 'boolean'
+        ]);
+
+        // Validate that budget_id is provided for budget_exceeded type
+        if ($validated['alert_type'] === 'budget_exceeded' && !$validated['budget_id']) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Budget is required for budget exceeded alerts'
+            ], 422);
+        }
+
+        // Validate that category_id is provided for category_spending type
+        if ($validated['alert_type'] === 'category_spending' && !$validated['category_id']) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category is required for category spending alerts'
+            ], 422);
+        }
+
+        $alert = BudgetAlert::create([
+            'customer_id' => $customer->id,
+            'name' => $validated['name'],
+            'alert_type' => $validated['alert_type'],
+            'budget_id' => $validated['budget_id'] ?? null,
+            'category_id' => $validated['category_id'] ?? null,
+            'condition_type' => $validated['condition_type'],
+            'threshold_value' => $validated['threshold_value'],
+            'condition_operator' => 'exceeds',
+            'frequency' => $validated['frequency'],
+            'send_email' => $validated['send_email'] ?? true,
+            'is_active' => true
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Alert created successfully',
+            'alert' => $alert->load(['budget.category', 'category'])
+        ], 201);
+    }
+
+    public function updateAlert(Request $request, $id)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        $alert = BudgetAlert::where('customer_id', $customer->id)->findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'alert_type' => 'required|in:budget_exceeded,category_spending,daily_spending,transaction_threshold',
+            'budget_id' => 'nullable|exists:budgets,id',
+            'category_id' => 'nullable|exists:budget_categories,id',
+            'condition_type' => 'required|in:percentage,amount',
+            'threshold_value' => 'required|numeric|min:0',
+            'frequency' => 'required|in:once,daily,weekly,monthly',
+            'send_email' => 'boolean'
+        ]);
+
+        $alert->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Alert updated successfully',
+            'alert' => $alert->load(['budget.category', 'category'])
+        ]);
+    }
+
+    public function toggleAlert(Request $request, $id)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        $alert = BudgetAlert::where('customer_id', $customer->id)->findOrFail($id);
+
+        $validated = $request->validate([
+            'is_active' => 'required|boolean'
+        ]);
+
+        $alert->update(['is_active' => $validated['is_active']]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Alert status updated successfully',
+            'alert' => $alert
+        ]);
+    }
+
+    public function deleteAlert($id)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        $alert = BudgetAlert::where('customer_id', $customer->id)->findOrFail($id);
+        $alert->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Alert deleted successfully'
+        ]);
+    }
+
+    // ==================== PAYMENT METHODS ====================
+
+    public function getPaymentMethods()
+    {
+        $customer = Auth::guard('customer')->user();
+
+        $paymentMethods = PaymentMethod::where('customer_id', $customer->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'payment_methods' => $paymentMethods
+        ]);
+    }
+
+    public function storePaymentMethod(Request $request)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'type' => 'nullable|string|max:100',
+            'color' => 'required|string',
+            'icon' => 'nullable|string'
+        ]);
+
+        $paymentMethod = PaymentMethod::create([
+            'customer_id' => $customer->id,
+            'name' => $validated['name'],
+            'type' => $validated['type'] ?? 'custom',
+            'color' => $validated['color'],
+            'icon' => $validated['icon'] ?? 'default'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment method created successfully',
+            'payment_method' => $paymentMethod
+        ], 201);
+    }
+
+    public function updatePaymentMethod(Request $request, $id)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        $paymentMethod = PaymentMethod::where('customer_id', $customer->id)->findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'type' => 'nullable|string|max:100',
+            'color' => 'required|string',
+            'icon' => 'nullable|string'
+        ]);
+
+        $paymentMethod->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment method updated successfully',
+            'payment_method' => $paymentMethod
+        ]);
+    }
+
+    public function deletePaymentMethod($id)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        $paymentMethod = PaymentMethod::where('customer_id', $customer->id)->findOrFail($id);
+        $paymentMethod->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment method deleted successfully'
+        ]);
     }
 }

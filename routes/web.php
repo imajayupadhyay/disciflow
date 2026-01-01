@@ -67,6 +67,14 @@ Route::middleware('customer.auth')->group(function () {
         Route::get('/export', function () {
             return Inertia::render('Dashboard/Trackers/BudgetCalculator/Export');
         })->name('trackers.budget.export');
+
+        Route::get('/alerts', function () {
+            return Inertia::render('Dashboard/Trackers/BudgetCalculator/Alerts');
+        })->name('trackers.budget.alerts');
+
+        Route::get('/payment-methods', function () {
+            return Inertia::render('Dashboard/Trackers/BudgetCalculator/PaymentMethods');
+        })->name('trackers.budget.payment-methods');
     });
 
     // Budget Calculator API Routes
@@ -95,5 +103,18 @@ Route::middleware('customer.auth')->group(function () {
         // Exports
         Route::get('/transactions/export/excel', [BudgetController::class, 'exportExcel']);
         Route::get('/transactions/export/pdf', [BudgetController::class, 'exportPdf']);
+
+        // Alerts
+        Route::get('/alerts', [BudgetController::class, 'getAlerts']);
+        Route::post('/alerts', [BudgetController::class, 'storeAlert']);
+        Route::put('/alerts/{id}', [BudgetController::class, 'updateAlert']);
+        Route::patch('/alerts/{id}/toggle', [BudgetController::class, 'toggleAlert']);
+        Route::delete('/alerts/{id}', [BudgetController::class, 'deleteAlert']);
+
+        // Payment Methods
+        Route::get('/payment-methods', [BudgetController::class, 'getPaymentMethods']);
+        Route::post('/payment-methods', [BudgetController::class, 'storePaymentMethod']);
+        Route::put('/payment-methods/{id}', [BudgetController::class, 'updatePaymentMethod']);
+        Route::delete('/payment-methods/{id}', [BudgetController::class, 'deletePaymentMethod']);
     });
 });

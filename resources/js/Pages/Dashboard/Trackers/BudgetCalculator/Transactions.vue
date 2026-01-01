@@ -393,12 +393,19 @@
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Payment Method (Optional)
             </label>
-            <input
+            <select
               v-model="form.payment_method"
-              type="text"
               class="w-full px-4 py-2.5 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
-              placeholder="Cash, Card, Bank Transfer..."
-            />
+            >
+              <option value="">Select payment method</option>
+              <option
+                v-for="method in savedPaymentMethods"
+                :key="method.id"
+                :value="method.name"
+              >
+                {{ method.name }}
+              </option>
+            </select>
           </div>
 
           <!-- Submit Buttons -->
@@ -455,6 +462,7 @@ const form = ref({
 
 const transactions = ref([]);
 const categories = ref([]);
+const savedPaymentMethods = ref([]);
 
 const availableCategories = computed(() => {
   return categories.value.filter(cat => cat.type === form.value.type);
@@ -571,6 +579,15 @@ const fetchCategories = async () => {
   }
 };
 
+const fetchPaymentMethods = async () => {
+  try {
+    const response = await axios.get('/api/budget/payment-methods');
+    savedPaymentMethods.value = response.data.payment_methods || [];
+  } catch (error) {
+    console.error('Error fetching payment methods:', error);
+  }
+};
+
 const openAddModal = () => {
   showAddModal.value = true;
 };
@@ -649,5 +666,6 @@ watch([categoryFilter, paymentMethodFilter, startDate, endDate], () => {
 onMounted(() => {
   fetchTransactions();
   fetchCategories();
+  fetchPaymentMethods();
 });
 </script>
