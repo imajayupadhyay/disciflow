@@ -80,15 +80,15 @@
                     </p>
 
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <a
-                            :href="pricingUrl"
+                        <button
+                            @click="handleGetStarted"
                             class="px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-800 dark:from-amber-500 dark:to-amber-700 text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-amber-500/30 transition-all duration-200 flex items-center space-x-2"
                         >
                             <span>Get Started Now</span>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                             </svg>
-                        </a>
+                        </button>
                         <button
                             @click="scrollToFeatures"
                             class="px-8 py-4 border-2 border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all duration-200"
@@ -476,15 +476,15 @@
                     <p class="text-xl text-amber-50 mb-8 max-w-2xl mx-auto">
                         Start tracking your income and expenses today with our comprehensive budget tracker
                     </p>
-                    <a
-                        :href="pricingUrl"
+                    <button
+                        @click="handleGetStarted"
                         class="inline-flex items-center space-x-2 px-8 py-4 bg-white text-amber-700 font-bold rounded-xl hover:bg-amber-50 transition-all duration-200 shadow-xl hover:shadow-2xl"
                     >
-                        <span>View Pricing Plans</span>
+                        <span>Get Started Now</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                         </svg>
-                    </a>
+                    </button>
                 </div>
 
                 <!-- FAQ Section -->
@@ -539,16 +539,22 @@
         <div class="relative z-10">
             <Footer />
         </div>
+
+        <!-- Auth Modal -->
+        <AuthModal v-model="showAuthModal" />
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Head } from '@inertiajs/vue3';
+import { ref, onMounted } from 'vue';
+import { Head, router } from '@inertiajs/vue3';
 import Header from '@/Components/Layout/Header.vue';
 import Footer from '@/Components/Layout/Footer.vue';
+import AuthModal from '@/Components/Auth/AuthModal.vue';
+import { useAuth } from '@/composables/useAuth';
 
-const pricingUrl = '/pricing';
+const { isAuthenticated, initAuth } = useAuth();
+const showAuthModal = ref(false);
 const featuresSection = ref(null);
 
 const scrollToFeatures = () => {
@@ -556,4 +562,16 @@ const scrollToFeatures = () => {
         featuresSection.value.scrollIntoView({ behavior: 'smooth' });
     }
 };
+
+const handleGetStarted = () => {
+    if (isAuthenticated.value) {
+        router.visit('/trackers/budget-calculator/dashboard');
+    } else {
+        showAuthModal.value = true;
+    }
+};
+
+onMounted(() => {
+    initAuth();
+});
 </script>
